@@ -6,15 +6,15 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 //import org.springframework.stereotype.Repository;
 import org.springframework.data.mongodb.repository.Query;
 
-import com.example.akr_server.bean.PartyDetail;
+import com.example.akr_server.pojo.Company;
 
 //@Repository
-public interface PartyDetailRepository extends MongoRepository<PartyDetail, String> {
+public interface CompanyRepository extends MongoRepository<Company, String> {
 	public long count();
 
 	@Query("{partyName:'?0'}")
-	PartyDetail findItemByName(String partyName);
+	Company findItemByName(String partyName);
 	
 	@Query(value="{partyLocation:'?0'}", fields="{'name' : 1, 'quantity' : 1}")
-	List<PartyDetail> findAll(String partyLocation);
+	List<Company> findAll(String partyLocation);
 }
