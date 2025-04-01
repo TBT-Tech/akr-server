@@ -39,7 +39,7 @@ public class CompanyController {
 //		return companyRepository.save(partyDetail);
 	}
 	
-	@DeleteMapping("/deleteCompanyEntryById/{companyId}")
+	@DeleteMapping("/deleteCompanyById/{companyId}")
 	public void deleteCompanyById(@PathVariable String companyId) {
 		companyService.deleteCompanyById(companyId);
 		
