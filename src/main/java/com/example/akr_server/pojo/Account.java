@@ -1,5 +1,7 @@
 package com.example.akr_server.pojo;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @Document(collection = "Account")
 public class Account {
 	
@@ -23,6 +26,12 @@ public class Account {
 	
 	@JsonProperty(value="Account Number", required = true)
 	private String accountNumber;
+	
+	@JsonProperty(value="Account Type", required = true)
+	private String accountType;
+	
+	@JsonProperty(value="Balance")
+	private Long balance= 0L;
 	
 //	@DocumentReference
 //	@JsonProperty(value = "company")
@@ -64,6 +73,17 @@ public class Account {
 
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
+	}
+	
+	
+	
+	public Account  creditBillAmount(Long amount) {
+		this.balance+=amount;
+		return this;
+	}
+	public Account  debitBillAmount(Long amount) {
+		this.balance-=amount;
+		return this;
 	}
 
 //	public Company getCompany() {
