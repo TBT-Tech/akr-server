@@ -27,6 +27,7 @@ public class Account {
 	@JsonProperty(value="Account Number", required = true)
 	private String accountNumber;
 	
+	//Should we rename this as COMPANY TYPE?
 	@JsonProperty(value="Account Type", required = true)
 	private String accountType;
 	
@@ -75,8 +76,22 @@ public class Account {
 		this.accountNumber = accountNumber;
 	}
 	
-	
-	
+	public String getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
+	}
+
+	public Long getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Long balance) {
+		this.balance = balance;
+	}
+
 	public Account  creditBillAmount(Long amount) {
 		this.balance+=amount;
 		return this;
