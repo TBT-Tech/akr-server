@@ -15,9 +15,7 @@ public class TransactionDTO {
 	@JsonProperty("Entry Date")
 	private Date entryDate;
 	
-	@JsonProperty("New Buyer Bill")
-	private Boolean newbuyerBill;
-	@JsonProperty("Buyer Bill Amount")
+	@JsonProperty("Bill Amount")
 	private Long buyerbillAmount;
 	
 	@JsonProperty("New Supplier Bill")

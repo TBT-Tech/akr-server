@@ -51,7 +51,7 @@ public class TransactionService {
 		accountMap.values().forEach(s->log.info("Accounts fetched {}",s)); 
 		
 		
-		if(transactionDTO.getNewbuyerBill()) {
+		if(transactionDTO.getNewSupplierBill()) {
 			accountMap.get(transactionDTO.getSenderAccount().getAccountID()).creditBillAmount(transactionDTO.getBuyerbillAmount()).debitBillAmount(transactionDTO.getAmountPaid());
 			
 		} else {
