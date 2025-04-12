@@ -17,4 +17,9 @@ public interface CompanyRepository extends MongoRepository<Company, String> {
 	
 	@Query(value="{partyLocation:'?0'}", fields="{'name' : 1, 'quantity' : 1}")
 	List<Company> findAll(String partyLocation);
+	
+	@Query("{ isActive: ?0 }")
+	List<Company> findByIsActive(Boolean isActive);
+
+
 }

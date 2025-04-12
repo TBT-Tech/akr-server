@@ -26,9 +26,9 @@ public class CompanyService {
 	@Autowired
 	AccountRepository accountRepository;
 	
-	public List<Company> getAllCompany(){
+	public List<Company> getAllActiveCompany(){
 		
-		return companyRepository.findAll();
+		return companyRepository.findByIsActive(true);
 	}
 	
 	public Company createCompany(Company company) {
@@ -50,11 +50,13 @@ public class CompanyService {
 		
 		try {
 			companyRepository.findById(companyId).map(existingCompany -> {
-				accountRepository.deleteAll(existingCompany.getBankAccounts());
-		        companyRepository.delete(existingCompany);
+				existingCompany.getBankAccounts().forEach(s->s.setIsActive(false));
+				existingCompany.setIsActive(false);
+				accountRepository.saveAll(existingCompany.getBankAccounts());
+				companyRepository.save(existingCompany);
 		        return existingCompany;
 		    }).orElse(null);
-			companyRepository.deleteById(companyId);
+//			companyRepository.deleteById(companyId);
 		}catch (Exception e) {
 			System.out.println("Error:"+e.getMessage());
 		}

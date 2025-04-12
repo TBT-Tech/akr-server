@@ -30,7 +30,7 @@ public class Transaction {
 	@JsonProperty("Amount Paid")
 	private Long amountPaid;
 	
-	@JsonProperty("remarks")
+	@JsonProperty("Remarks")
 	private String remarks;
 
 }

@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Document(collection = "Company")
+@Data
 public class Company {
 	
 	@Id
@@ -37,6 +38,7 @@ public class Company {
 	@JsonProperty(value="Bank Transfer", required = true)
 	private Boolean isBankTransfer;
 	
+	private Boolean isActive = true;
 	
 	@JsonProperty(value="Bank Accounts", required = true)
 //	@ReadOnlyProperty

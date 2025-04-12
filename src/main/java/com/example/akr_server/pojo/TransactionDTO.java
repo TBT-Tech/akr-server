@@ -36,7 +36,7 @@ public class TransactionDTO {
 	@JsonProperty("Amount Paid")
 	private Long amountPaid;
 	
-	@JsonProperty("remarks")
+	@JsonProperty("Remarks")
 	private String remarks;
 
 }

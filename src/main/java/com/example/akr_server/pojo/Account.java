@@ -34,6 +34,8 @@ public class Account {
 	@JsonProperty(value="Balance")
 	private Long balance= 0L;
 	
+	private Boolean isActive=true;
+	
 //	@DocumentReference
 //	@JsonProperty(value = "company")
 //	@ReadOnlyProperty
