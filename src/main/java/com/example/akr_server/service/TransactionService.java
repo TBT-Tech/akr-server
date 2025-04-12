@@ -1,5 +1,6 @@
 package com.example.akr_server.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -78,7 +79,7 @@ public class TransactionService {
 		AccountStatement senderStatement=new AccountStatement();
 		senderStatement.setEntryDate(transactionDTO.getEntryDate());
 		senderStatement.setAccountId(accountMap.get(transactionDTO.getSenderAccount().getAccountID()));
-		senderStatement.setCredit(transactionDTO.getBuyerbillAmount());
+		senderStatement.setCredit(transactionDTO.getBuyerbillAmount()!=null?transactionDTO.getBuyerbillAmount():0);
 		senderStatement.setDebit(transactionDTO.getAmountPaid());
 		senderStatement.setBalance(accountMap.get(transactionDTO.getSenderAccount().getAccountID()).getBalance());
 		senderStatement.setTransactionId(transaction);
@@ -88,7 +89,9 @@ public class TransactionService {
 		receiverStatement.setAccountId(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()));
 		
 		if(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getAccountType().equalsIgnoreCase(SUPPLIER)) {
-			receiverStatement.setCredit(transactionDTO.getSupplierbillAmount());
+			receiverStatement.setCredit(transactionDTO.getSupplierbillAmount() != null 
+			        ? transactionDTO.getSupplierbillAmount() 
+			                : 0);
 			receiverStatement.setDebit(transactionDTO.getAmountPaid());
 		}else {
 			receiverStatement.setCredit(transactionDTO.getAmountPaid());
