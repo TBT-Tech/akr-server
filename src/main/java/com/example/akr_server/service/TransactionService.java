@@ -59,7 +59,7 @@ public class TransactionService {
 			accountMap.get(transactionDTO.getSenderAccount().getAccountID()).debitBillAmount(transactionDTO.getAmountPaid());
 		}
 		
-		if(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getAccountType().equalsIgnoreCase(SUPPLIER)) {
+		if(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getCompanyType().equalsIgnoreCase(SUPPLIER)) {
 		
 		if(transactionDTO.getNewSupplierBill()) {
 			accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).creditBillAmount(transactionDTO.getSupplierbillAmount()).debitBillAmount(transactionDTO.getAmountPaid());
@@ -88,7 +88,7 @@ public class TransactionService {
 		receiverStatement.setEntryDate(transactionDTO.getEntryDate());
 		receiverStatement.setAccountId(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()));
 		
-		if(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getAccountType().equalsIgnoreCase(SUPPLIER)) {
+		if(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getCompanyType().equalsIgnoreCase(SUPPLIER)) {
 			receiverStatement.setCredit(transactionDTO.getSupplierbillAmount() != null 
 			        ? transactionDTO.getSupplierbillAmount() 
 			                : 0);

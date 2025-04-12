@@ -19,7 +19,7 @@ public class AccountService {
 	}
 	
 	public List<Account> getAccountsByAccountType(String companyType){
-		return accountRepository.findByAccountType(companyType);
+		return accountRepository.findByCompanyType(companyType);
 	}
 
 }

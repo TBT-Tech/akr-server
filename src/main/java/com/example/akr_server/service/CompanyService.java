@@ -39,7 +39,7 @@ public class CompanyService {
 //				 				.map(eachAccount -> {eachAccount.setCompany(company); return eachAccount;}).collect(Collectors.toList());
 //		
 //				 company.setBankAccounts(updatedAccounts);
-		company.getBankAccounts().forEach(a -> a.setAccountType(company.getCompanyType()));
+		company.getBankAccounts().forEach(a -> a.setCompanyType(company.getCompanyType()));
 		List<Account> savedAccounts = accountRepository.saveAll(company.getBankAccounts());
 		company.setBankAccounts(savedAccounts);
 		System.out.println(savedAccounts);

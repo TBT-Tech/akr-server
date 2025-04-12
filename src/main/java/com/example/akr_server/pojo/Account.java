@@ -28,8 +28,8 @@ public class Account {
 	private String accountNumber;
 	
 	//Should we rename this as COMPANY TYPE?
-	@JsonProperty(value="Account Type", required = true)
-	private String accountType;
+	@JsonProperty(value="Company Type", required = true)
+	private String companyType;
 	
 	@JsonProperty(value="Balance")
 	private Long balance= 0L;
@@ -52,45 +52,6 @@ public class Account {
 //		this.company = company;
 	}
 
-	public String getAccountID() {
-		return accountID;
-	}
-
-	public void setAccountID(String accountID) {
-		this.accountID = accountID;
-	}
-
-	public String getAccountName() {
-		return accountName;
-	}
-
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
-
-	public String getAccountNumber() {
-		return accountNumber;
-	}
-
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
-	}
-	
-	public String getAccountType() {
-		return accountType;
-	}
-
-	public void setAccountType(String accountType) {
-		this.accountType = accountType;
-	}
-
-	public Long getBalance() {
-		return balance;
-	}
-
-	public void setBalance(Long balance) {
-		this.balance = balance;
-	}
 
 	public Account  creditBillAmount(Long amount) {
 		this.balance+=amount;
@@ -101,14 +62,6 @@ public class Account {
 		return this;
 	}
 
-//	public Company getCompany() {
-//		return company;
-//	}
-//
-//	public void setCompany(Company company) {
-//		this.company = company;
-//	}
-//	
 	
 	
 }
