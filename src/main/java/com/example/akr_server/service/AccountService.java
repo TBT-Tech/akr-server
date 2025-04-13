@@ -14,8 +14,8 @@ public class AccountService {
 	@Autowired
 	AccountRepository accountRepository;
 	
-	public List<Account> getAllAccounts() {
-		return accountRepository.findAll();
+	public List<Account> getAllActiveAccounts() {
+		return accountRepository.findByIsActive(true);
 	}
 	
 	public List<Account> getAccountsByAccountType(String companyType){

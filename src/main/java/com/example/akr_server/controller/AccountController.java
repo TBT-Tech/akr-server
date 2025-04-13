@@ -22,7 +22,7 @@ public class AccountController {
 	
 	@GetMapping("/fetchAllAccount")
 	public List<Account> getAllAccount(){
-		return accountService.getAllAccounts();
+		return accountService.getAllActiveAccounts();
 	}
 	@GetMapping("/fetchAllAccountByCompanyType/{companyType}")
 	public List<Account> getAllAccount(@PathVariable String companyType){
