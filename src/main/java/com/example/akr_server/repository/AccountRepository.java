@@ -9,5 +9,7 @@ import com.example.akr_server.pojo.Account;
 public interface AccountRepository extends MongoRepository<Account, String> {
 	
 	public List<Account> findByCompanyType(String companyType);
+	
+	public List<Account> findByIsActive(Boolean isActive);
 
 }
