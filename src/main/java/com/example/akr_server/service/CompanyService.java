@@ -27,7 +27,6 @@ public class CompanyService {
 	AccountRepository accountRepository;
 	
 	public List<Company> getAllActiveCompany(){
-		
 		return companyRepository.findByIsActive(true);
 	}
 	

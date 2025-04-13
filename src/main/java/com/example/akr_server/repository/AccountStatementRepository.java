@@ -11,5 +11,10 @@ public interface AccountStatementRepository extends MongoRepository<AccountState
 	
 //	@Query("{'Account ID' :{'$ref' : 'Account ID' , '$id' : ?0}}")
 	public List<AccountStatement> findAllByAccountId(String accountId);
+	
+//	Both Not Working
+//	@Query(value = "{ '`Account ID`.`Company Type`' : ?0 }")
+//	@Query(value = "{'Account ID' :{'$ref' : 'companyType' , '$id' : '?0'}}")
+//	List<AccountStatement> findAllByCompanyType(String companyType);
 
 }

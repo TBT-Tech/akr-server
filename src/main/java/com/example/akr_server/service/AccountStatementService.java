@@ -1,5 +1,6 @@
 package com.example.akr_server.service;
 
+import java.beans.Statement;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,4 +21,8 @@ public class AccountStatementService {
 	public List<AccountStatement> getAllAccountStatementByAccountID(String accountID){
 		return accountStatementRepository.findAllByAccountId(accountID);
 	}
+	public List<AccountStatement> getAllAccountStatementByCompanyType(String companyType) {
+		return accountStatementRepository.findAll().stream().filter(statement-> statement.getAccountId().getCompanyType().equalsIgnoreCase(companyType)).toList();
+	}
 }
+	

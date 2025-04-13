@@ -24,6 +24,10 @@ public class AccountStatementController {
 	public List<AccountStatement> getAllAccountStatement() {
 		return accountStatementService.getAllAccountStatement();
 	}
+	@GetMapping("/fetchAllAccountStatementByCompanyType/{companyType}")
+	public List<AccountStatement> getAllAccountStatementByCompanyType(@PathVariable String companyType) {
+		return accountStatementService.getAllAccountStatementByCompanyType(companyType);
+	}
 	
 	@GetMapping("/fetchAllAccountStatementByAccountID/{accountID}")
 	public List<AccountStatement> getAllAccountStatementByAccountID(@PathVariable String accountID){
