@@ -61,5 +61,9 @@ public class CompanyService {
 		}
 		
 	}
+
+	public List<Company> getAllActiveCompanyByCompanyType(String companyType) {
+		return companyRepository.findAllActiveByCompanyType(companyType, true);
+	}
 }
 

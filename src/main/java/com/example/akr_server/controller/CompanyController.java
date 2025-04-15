@@ -33,6 +33,11 @@ public class CompanyController {
 //		return companyRepository.findAll();
 	}
 	
+	@GetMapping("/fetchAllCompanyByCompanyType/{companyType}")
+	public List<Company> getAllCompanyByCompanyType(String companyType) {
+		return companyService.getAllActiveCompanyByCompanyType(companyType);
+	}
+	
 	@PostMapping("/createCompany")
 	public Company createCompany(@RequestBody Company company) {
 		return companyService.createCompany(company);

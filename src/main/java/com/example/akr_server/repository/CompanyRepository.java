@@ -20,6 +20,9 @@ public interface CompanyRepository extends MongoRepository<Company, String> {
 	
 	@Query("{ isActive: ?0 }")
 	List<Company> findByIsActive(Boolean isActive);
+	
+	@Query("{ companyType:'?0', isActive: ?1 }")
+	List<Company> findAllActiveByCompanyType(String companyType, boolean isActive);
 
 
 }
