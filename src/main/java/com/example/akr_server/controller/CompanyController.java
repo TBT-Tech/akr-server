@@ -32,7 +32,7 @@ public class CompanyController {
 		return companyService.getAllActiveCompany();
 //		return companyRepository.findAll();
 	}
-	
+		
 	@GetMapping("/fetchAllCompanyByCompanyType/{companyType}")
 	public List<Company> getAllCompanyByCompanyType(String companyType) {
 		return companyService.getAllActiveCompanyByCompanyType(companyType);
