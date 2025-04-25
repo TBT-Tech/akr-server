@@ -1,6 +1,7 @@
 package com.example.akr_server.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -49,9 +50,9 @@ public class TransactionService {
 		List<Account> accountsDetails = accountRepository.findAllById(List.of(transactionDTO.getSenderAccount().getAccountID(),transactionDTO.getReceiverAccount().getAccountID()));
 		Map<String, Account> accountMap = accountsDetails.stream()
 		        .collect(Collectors.toMap(Account::getAccountID, Function.identity()));
+		
+		
 		accountMap.values().forEach(s->log.info("Accounts fetched {}",s)); 
-		
-		
 		if(transactionDTO.getNewbuyerBill()) {
 			accountMap.get(transactionDTO.getSenderAccount().getAccountID()).creditBillAmount(transactionDTO.getBuyerbillAmount()).debitBillAmount(transactionDTO.getAmountPaid());
 			
@@ -61,45 +62,62 @@ public class TransactionService {
 		
 		if(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getCompanyType().equalsIgnoreCase(SUPPLIER)) {
 		
-		if(transactionDTO.getNewSupplierBill()) {
-			accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).creditBillAmount(transactionDTO.getSupplierbillAmount()).debitBillAmount(transactionDTO.getAmountPaid());
-			
-		} else {
-			accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).debitBillAmount(transactionDTO.getAmountPaid());
-		}
+			if(transactionDTO.getNewSupplierBill()) {
+				accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).creditBillAmount(transactionDTO.getSupplierbillAmount()).debitBillAmount(transactionDTO.getAmountPaid());
+				
+			} else {
+				accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).debitBillAmount(transactionDTO.getAmountPaid());
+			}
 		} else {
 			accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).creditBillAmount(transactionDTO.getAmountPaid());
 		}
+		
+//		if(!transactionDTO.getNewSupplierBill()) {
+//			accountMap.remove(transactionDTO.getReceiverAccount().getAccountID());
+//		}else if(!transactionDTO.getNewbuyerBill()) {
+//			accountMap.remove(transactionDTO.getSenderAccount().getAccountID());
+//		}
+		
 		accountMap.values().forEach(s->log.info("Accounts after transaction: {}",s)); 
 		
 		accountRepository.saveAll(accountMap.values());
 		transaction=transactionRepository.save(transaction);
 		
 		log.info("Transaction added: {}",transaction);
-		AccountStatement senderStatement=new AccountStatement();
-		senderStatement.setEntryDate(transactionDTO.getEntryDate());
-		senderStatement.setAccountId(accountMap.get(transactionDTO.getSenderAccount().getAccountID()));
-		senderStatement.setCredit(transactionDTO.getBuyerbillAmount()!=null?transactionDTO.getBuyerbillAmount():0);
-		senderStatement.setDebit(transactionDTO.getAmountPaid());
-		senderStatement.setBalance(accountMap.get(transactionDTO.getSenderAccount().getAccountID()).getBalance());
-		senderStatement.setTransactionId(transaction);
 		
-		AccountStatement receiverStatement=new AccountStatement();
-		receiverStatement.setEntryDate(transactionDTO.getEntryDate());
-		receiverStatement.setAccountId(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()));
+		//Record Account Statements
+		List<AccountStatement> accountstatements = new ArrayList<AccountStatement>();
 		
-		if(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getCompanyType().equalsIgnoreCase(SUPPLIER)) {
-			receiverStatement.setCredit(transactionDTO.getSupplierbillAmount() != null 
-			        ? transactionDTO.getSupplierbillAmount() 
-			                : 0);
-			receiverStatement.setDebit(transactionDTO.getAmountPaid());
-		}else {
-			receiverStatement.setCredit(transactionDTO.getAmountPaid());
+		if(!transactionDTO.getNewSupplierBill()){
+			AccountStatement senderStatement=new AccountStatement();
+			senderStatement.setEntryDate(transactionDTO.getEntryDate());
+			senderStatement.setAccountId(accountMap.get(transactionDTO.getSenderAccount().getAccountID()));
+			senderStatement.setCredit(transactionDTO.getBuyerbillAmount()!=null?transactionDTO.getBuyerbillAmount():0);
+			senderStatement.setDebit(transactionDTO.getAmountPaid());
+			senderStatement.setBalance(accountMap.get(transactionDTO.getSenderAccount().getAccountID()).getBalance());
+			senderStatement.setTransactionId(transaction);
+			accountstatements.add(senderStatement);
 		}
-		receiverStatement.setBalance(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getBalance());
-		receiverStatement.setTransactionId(transaction);
 		
-		List<AccountStatement> accountstatements = accountStatementRepository.saveAll(List.of(senderStatement, receiverStatement));
+		if(!transactionDTO.getNewbuyerBill()){
+			AccountStatement receiverStatement=new AccountStatement();
+			receiverStatement.setEntryDate(transactionDTO.getEntryDate());
+			receiverStatement.setAccountId(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()));
+			
+			if(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getCompanyType().equalsIgnoreCase(SUPPLIER)) {
+				receiverStatement.setCredit(transactionDTO.getSupplierbillAmount() != null 
+				        ? transactionDTO.getSupplierbillAmount() 
+				                : 0);
+				receiverStatement.setDebit(transactionDTO.getAmountPaid());
+			}else {
+				receiverStatement.setCredit(transactionDTO.getAmountPaid());
+			}
+			receiverStatement.setBalance(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getBalance());
+			receiverStatement.setTransactionId(transaction);
+			
+			accountstatements.add(receiverStatement);
+		}
+		accountStatementRepository.saveAll(accountstatements);
 		accountstatements.stream().forEach(a->log.info("Account Statements added {}",a));
 		
 		return transaction;

@@ -33,7 +33,7 @@ public class BillsService {
 		TransactionDTO transactionDTO = new TransactionDTO(
 				buyerBill.getEntryDate(),
 				true,
-				Long.valueOf(buyerBill.getBillAmmount()),
+				Long.valueOf(buyerBill.getBillAmount()),
 				false,
 				0L,
 				null,
@@ -50,13 +50,13 @@ public class BillsService {
 		supplierBill.setBillType("Supplier");
 		TransactionDTO transactionDTO = new TransactionDTO(
 				supplierBill.getEntryDate(),
-				true,
-				Long.valueOf(supplierBill.getBillAmmount()),
 				false,
 				0L,
+				true,
+				Long.valueOf(supplierBill.getBillAmount()),
 				null,
-				accountRepository.findById(supplierAccountId).orElse(null),
 				accountRepository.findByCompanyType("Own", true).getFirst(),
+				accountRepository.findById(supplierAccountId).orElse(null),
 				Long.valueOf(supplierBill.getAdvanceAmount()),
 				supplierBill.getRemarks()
 				);
