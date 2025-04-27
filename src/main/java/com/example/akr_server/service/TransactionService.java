@@ -98,6 +98,7 @@ public class TransactionService {
 				senderStatement.setCredit(transactionDTO.getBuyerbillAmount()!=null?transactionDTO.getBuyerbillAmount():0);
 				senderStatement.setDebit(transactionDTO.getAmountPaid());
 				senderStatement.setBalance(accountMap.get(transactionDTO.getSenderAccount().getAccountID()).getBalance());
+				if(transaction.getTransactionId()!=null)
 				senderStatement.setTransactionId(transaction);
 				accountstatements.add(senderStatement);
 			}
@@ -116,6 +117,7 @@ public class TransactionService {
 					receiverStatement.setCredit(transactionDTO.getAmountPaid());
 				}
 				receiverStatement.setBalance(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getBalance());
+				if(transaction.getTransactionId()!=null)
 				receiverStatement.setTransactionId(transaction);
 				
 				accountstatements.add(receiverStatement);
