@@ -85,44 +85,44 @@ public class TransactionService {
 		if(transactionDTO.getAmountPaid()!=null && transactionDTO.getAmountPaid()!= 0) {
 			transaction=transactionRepository.save(transaction);
 			log.info("Transaction added: {}",transaction);
-		
-			//Record Account Statements
-			List<AccountStatement> accountstatements = new ArrayList<AccountStatement>();
-			
-			if(!transactionDTO.getNewSupplierBill()){
-				AccountStatement senderStatement=new AccountStatement();
-				senderStatement.setEntryDate(transactionDTO.getEntryDate());
-				senderStatement.setAccountId(accountMap.get(transactionDTO.getSenderAccount().getAccountID()));
-				senderStatement.setCredit(transactionDTO.getBuyerbillAmount()!=null?transactionDTO.getBuyerbillAmount():0);
-				senderStatement.setDebit(transactionDTO.getAmountPaid());
-				senderStatement.setBalance(accountMap.get(transactionDTO.getSenderAccount().getAccountID()).getBalance());
-				if(transaction.getTransactionId()!=null)
-				senderStatement.setTransactionId(transaction);
-				accountstatements.add(senderStatement);
-			}
-			
-			if(!transactionDTO.getNewbuyerBill()){
-				AccountStatement receiverStatement=new AccountStatement();
-				receiverStatement.setEntryDate(transactionDTO.getEntryDate());
-				receiverStatement.setAccountId(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()));
-				
-				if(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getCompanyType().equalsIgnoreCase(SUPPLIER)) {
-					receiverStatement.setCredit(transactionDTO.getSupplierbillAmount() != null 
-					        ? transactionDTO.getSupplierbillAmount() 
-					                : 0);
-					receiverStatement.setDebit(transactionDTO.getAmountPaid());
-				}else {
-					receiverStatement.setCredit(transactionDTO.getAmountPaid());
-				}
-				receiverStatement.setBalance(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getBalance());
-				if(transaction.getTransactionId()!=null)
-				receiverStatement.setTransactionId(transaction);
-				
-				accountstatements.add(receiverStatement);
-			}
-			accountStatementRepository.saveAll(accountstatements);
-			accountstatements.stream().forEach(a->log.info("Account Statements added {}",a));
 		}
+			//Record Account Statements
+		List<AccountStatement> accountstatements = new ArrayList<AccountStatement>();
+		
+		if(!transactionDTO.getNewSupplierBill()){
+			AccountStatement senderStatement=new AccountStatement();
+			senderStatement.setEntryDate(transactionDTO.getEntryDate());
+			senderStatement.setAccountId(accountMap.get(transactionDTO.getSenderAccount().getAccountID()));
+			senderStatement.setCredit(transactionDTO.getBuyerbillAmount()!=null?transactionDTO.getBuyerbillAmount():0);
+			senderStatement.setDebit(transactionDTO.getAmountPaid());
+			senderStatement.setBalance(accountMap.get(transactionDTO.getSenderAccount().getAccountID()).getBalance());
+			if(transaction.getTransactionId()!=null)
+			senderStatement.setTransactionId(transaction);
+			accountstatements.add(senderStatement);
+		}
+		
+		if(!transactionDTO.getNewbuyerBill()){
+			AccountStatement receiverStatement=new AccountStatement();
+			receiverStatement.setEntryDate(transactionDTO.getEntryDate());
+			receiverStatement.setAccountId(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()));
+			
+			if(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getCompanyType().equalsIgnoreCase(SUPPLIER)) {
+				receiverStatement.setCredit(transactionDTO.getSupplierbillAmount() != null 
+				        ? transactionDTO.getSupplierbillAmount() 
+				                : 0);
+				receiverStatement.setDebit(transactionDTO.getAmountPaid());
+			}else {
+				receiverStatement.setCredit(transactionDTO.getAmountPaid());
+			}
+			receiverStatement.setBalance(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getBalance());
+			if(transaction.getTransactionId()!=null)
+			receiverStatement.setTransactionId(transaction);
+			
+			accountstatements.add(receiverStatement);
+		}
+		accountStatementRepository.saveAll(accountstatements);
+		accountstatements.stream().forEach(a->log.info("Account Statements added {}",a));
+	
 		return transaction;
 		
 	}
