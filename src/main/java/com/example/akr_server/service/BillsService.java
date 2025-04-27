@@ -39,7 +39,7 @@ public class BillsService {
 				null,
 				accountRepository.findById(buyerAccountId).orElse(null),
 				accountRepository.findByCompanyType("Own", true).getFirst(),
-				Long.valueOf(buyerBill.getAdvanceAmount()),
+				0L,
 				buyerBill.getRemarks()
 				);
 		transactionService.addTransaction(transactionDTO);
@@ -57,7 +57,7 @@ public class BillsService {
 				null,
 				accountRepository.findByCompanyType("Own", true).getFirst(),
 				accountRepository.findById(supplierAccountId).orElse(null),
-				Long.valueOf(supplierBill.getAdvanceAmount()),
+				0L,
 				supplierBill.getRemarks()
 				);
 		transactionService.addTransaction(transactionDTO);

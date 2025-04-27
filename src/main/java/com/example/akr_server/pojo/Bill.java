@@ -30,8 +30,6 @@ public class Bill {
 	@JsonProperty("Bill Amount")
 	private Long billAmount;
 	
-	@JsonProperty("Advance Amount")
-	private Long advanceAmount;
 	
 	@JsonProperty("Remarks")
 	private String remarks;
