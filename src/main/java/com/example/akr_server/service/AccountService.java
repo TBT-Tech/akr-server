@@ -21,5 +21,12 @@ public class AccountService {
 	public List<Account> getAccountsByAccountType(String companyType){
 		return accountRepository.findByCompanyType(companyType,true);
 	}
+	
+	public Account addAccount(Account account) {
+		return accountRepository.save(account);
+	}
 
+	public Long getAllOwnAccountTotalBalance() {
+		return accountRepository.findByCompanyType("Own", true).stream().map(Account::getBalance).reduce(0L, Long::sum);
+	}
 }

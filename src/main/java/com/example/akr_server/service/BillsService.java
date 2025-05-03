@@ -32,6 +32,7 @@ public class BillsService {
 		buyerBill.setBillType("Buyer");
 		TransactionDTO transactionDTO = new TransactionDTO(
 				buyerBill.getEntryDate(),
+				false,
 				true,
 				Long.valueOf(buyerBill.getBillAmount()),
 				false,
@@ -50,6 +51,7 @@ public class BillsService {
 		supplierBill.setBillType("Supplier");
 		TransactionDTO transactionDTO = new TransactionDTO(
 				supplierBill.getEntryDate(),
+				false,
 				false,
 				0L,
 				true,

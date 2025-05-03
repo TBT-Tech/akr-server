@@ -17,13 +17,18 @@ public class TransactionDTO {
 	@JsonProperty("Entry Date")
 	private Date entryDate;
 	
+	@JsonProperty(value="Expense Transaction",required=false)
+	private Boolean isAnExpense=false;
+	
 	@JsonProperty("New Buyer Bill")
 	private Boolean newbuyerBill;
+	
 	@JsonProperty("Buyer Bill Amount")
 	private Long buyerbillAmount;
 	
 	@JsonProperty("New Supplier Bill")
 	private Boolean newSupplierBill;
+	
 	@JsonProperty("Supplier Bill Amount")
 	private Long supplierbillAmount;
 	@JsonProperty("Transaction ID")

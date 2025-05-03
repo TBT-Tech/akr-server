@@ -34,8 +34,12 @@ public class TransactionService {
 	@Autowired
 	private AccountStatementRepository accountStatementRepository;
 	
+	@Autowired
+	private AccountService accountService;
+	
 	private static String BUYER="BUYER";
 	private static String SUPPLIER="SUPPLIER";
+	private static String OWN="Own";
 	
 	public List<Transaction> getAllTransaction() {
 		return transactionRepository.findAll();
@@ -46,6 +50,9 @@ public class TransactionService {
 		
 		Transaction transaction=new Transaction();
 		BeanUtils.copyProperties(transactionDTO, transaction);
+//		List<Account> accountsDetails = new ArrayList<Account>();
+//		Account senderAccount = accountRepository.findById(transactionDTO.getSenderAccount().getAccountID()).orElse(null);
+//		Account recieverAccount = accountRepository.findById(transactionDTO.getReceiverAccount().getAccountID()).orElse(null);
 		List<Account> accountsDetails = accountRepository.findAllById(List.of(transactionDTO.getSenderAccount().getAccountID(),transactionDTO.getReceiverAccount().getAccountID()));
 		Map<String, Account> accountMap = accountsDetails.stream()
 		        .collect(Collectors.toMap(Account::getAccountID, Function.identity()));
@@ -89,19 +96,25 @@ public class TransactionService {
 			//Record Account Statements
 		List<AccountStatement> accountstatements = new ArrayList<AccountStatement>();
 		
-		if(!transactionDTO.getNewSupplierBill()){
+		if(!transactionDTO.getNewSupplierBill() ){
 			AccountStatement senderStatement=new AccountStatement();
 			senderStatement.setEntryDate(transactionDTO.getEntryDate());
 			senderStatement.setAccountId(accountMap.get(transactionDTO.getSenderAccount().getAccountID()));
 			senderStatement.setCredit(transactionDTO.getBuyerbillAmount()!=null?transactionDTO.getBuyerbillAmount():0);
 			senderStatement.setDebit(transactionDTO.getAmountPaid());
 			senderStatement.setBalance(accountMap.get(transactionDTO.getSenderAccount().getAccountID()).getBalance());
+			if(transactionDTO.getSenderAccount().getCompanyType().equalsIgnoreCase(OWN))
+				senderStatement.setCumulativeBalance(accountService.getAllOwnAccountTotalBalance());
+			else
+				senderStatement.setCumulativeBalance(null);
 			if(transaction.getTransactionId()!=null)
-			senderStatement.setTransactionId(transaction);
+				senderStatement.setTransactionId(transaction);
+			
+			senderStatement.setRemarks(transactionDTO.getRemarks());
 			accountstatements.add(senderStatement);
 		}
 		
-		if(!transactionDTO.getNewbuyerBill()){
+		if(!transactionDTO.getNewbuyerBill() || !transactionDTO.getIsAnExpense()){
 			AccountStatement receiverStatement=new AccountStatement();
 			receiverStatement.setEntryDate(transactionDTO.getEntryDate());
 			receiverStatement.setAccountId(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()));
@@ -115,9 +128,14 @@ public class TransactionService {
 				receiverStatement.setCredit(transactionDTO.getAmountPaid());
 			}
 			receiverStatement.setBalance(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()).getBalance());
-			if(transaction.getTransactionId()!=null)
-			receiverStatement.setTransactionId(transaction);
+			if(transactionDTO.getReceiverAccount().getCompanyType().equalsIgnoreCase(OWN))
+				receiverStatement.setCumulativeBalance(accountService.getAllOwnAccountTotalBalance());
+			else
+				receiverStatement.setCumulativeBalance(null);
 			
+			if(transaction.getTransactionId()!=null)
+				receiverStatement.setTransactionId(transaction);
+			receiverStatement.setRemarks(transactionDTO.getRemarks());
 			accountstatements.add(receiverStatement);
 		}
 		accountStatementRepository.saveAll(accountstatements);

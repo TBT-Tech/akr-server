@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.annotation.Nullable;
 import lombok.Data;
 
 @Data
@@ -19,6 +20,9 @@ public class AccountStatement {
 	
 	@JsonProperty("Entry Date")
 	private Date entryDate;
+	
+	@JsonProperty("Remarks")
+	private String remarks;
 	
 	@JsonProperty("Transaction ID")
 	@DBRef
@@ -33,6 +37,10 @@ public class AccountStatement {
 	private long debit;
 	@JsonProperty("Balance")
 	private long balance;
+	@JsonProperty(value="Cumulative Balance",required = false)
+	@Nullable
+	private Long cumulativeBalance;
+	
 	
 	
 
