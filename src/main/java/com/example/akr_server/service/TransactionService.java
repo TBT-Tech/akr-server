@@ -114,7 +114,7 @@ public class TransactionService {
 			accountstatements.add(senderStatement);
 		}
 		
-		if(!transactionDTO.getNewbuyerBill() || !transactionDTO.getIsAnExpense()){
+		if(!transactionDTO.getNewbuyerBill()){
 			AccountStatement receiverStatement=new AccountStatement();
 			receiverStatement.setEntryDate(transactionDTO.getEntryDate());
 			receiverStatement.setAccountId(accountMap.get(transactionDTO.getReceiverAccount().getAccountID()));
